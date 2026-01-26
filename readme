@@ -15,8 +15,6 @@ composer require symfony/validator
 
 composer require symfony/password-hasher
 
-composer require doctrine/orm:^3.0
-
 composer require symfony/property-access / убрать
 
 composer require --dev symfony/test-pack
