@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\App\src\Infrastructure\Presentation\Api\User\Controller;
 
+use App\Infrastructure\DataFixtures\Test\UserFixture;
 use App\Infrastructure\Doctrine\Entity\User\DoctrineUser;
 use App\Tests\ApiTestCase;
-use App\DataFixtures\Test\UserFixture;
-use Symfony\Component\HttpFoundation\Response;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Функциональные тесты API‑контроллера User.
