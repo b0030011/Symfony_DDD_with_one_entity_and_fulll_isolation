@@ -1,7 +1,7 @@
 services:
   mongo:
     image: mongo
-    container_name: cm_mongo
+    container_name: symfony_mongo
     profiles:
       - mongo
       - db
