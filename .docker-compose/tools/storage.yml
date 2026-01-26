@@ -1,0 +1,16 @@
+services:
+  storage:
+    build: ../../storage
+    container_name: symfony_storage
+#    profiles:
+#      - storage
+#      - tools
+#      - all
+    ports:
+      - '${STORAGE_PORT:-8083}:80'
+    volumes:
+      - ../../storage/data:/home/storage/
+      - ../../log/storage:/var/log/nginx
+    networks:
+      app_net:
+#        ipv4_address: 172.16.238.10

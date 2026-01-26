@@ -1,0 +1,13 @@
+services:
+  mailpit:
+    image: axllent/mailpit
+    container_name: cm_mailpit
+#    profiles:
+#      - mail
+#      - tools
+#      - all
+    ports:
+      - '${MAILPIT_PORT_8025:-8025}:8025'
+      - '${MAILPIT_PORT_1025:-1025}:1025'
+    networks:
+      - app_net

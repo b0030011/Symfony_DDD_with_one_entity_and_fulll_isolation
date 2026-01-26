@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="OPEN_SSH" host="192.168.2.8" id="a7cdb702-ef5a-4b00-91a4-f8f528b0d2cd" port="22" nameFormat="DESCRIPTIVE" username="a" useOpenSSHConfig="true" />
+      <sshConfig authType="OPEN_SSH" host="192.168.2.8" id="043180c3-98dc-4e11-82a7-7de0309992bf" port="22" customName="symfony" nameFormat="CUSTOM" username="a" useOpenSSHConfig="true">
+        <option name="customName" value="symfony" />
+      </sshConfig>
+    </configs>
+  </component>
+</project>

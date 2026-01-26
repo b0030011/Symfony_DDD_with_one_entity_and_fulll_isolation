@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="symfony" confirmBeforeUploading="false" confirmBeforeDeletion="false" autoUploadExternalChanges="true">
+    <option name="confirmBeforeDeletion" value="false" />
+    <option name="confirmBeforeUploading" value="false" />
+    <serverData>
+      <paths name="symfony">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="app" local="$PROJECT_DIR$/app" web="/" />
+            <mapping deploy="app/public" local="$PROJECT_DIR$/app/public" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

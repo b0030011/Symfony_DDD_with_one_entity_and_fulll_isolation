@@ -1,0 +1,9 @@
+networks:
+ # app_net_additional:
+  app_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "173.16.238.0/24"
+#      config:
+#        - subnet: "172.16.238.0/24"

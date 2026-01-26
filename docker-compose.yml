@@ -1,0 +1,25 @@
+include:
+  # Core
+  - ./.docker-compose/core/${NGINX:-nginx}.yml
+  - ./.docker-compose/core/${NGINX_REVERSE_PROXY:-nginx-reverse-proxy}.yml
+  - ./.docker-compose/core/${PHP_FPM:-php-fpm}.yml
+
+  # Databases
+  - ./.docker-compose/databases/${DB:-db}.yml
+#  - ./.docker-compose/databases/${MYSQL:-mysql}.yml
+#  - ./.docker-compose/databases/${CLICKHOUSE:-clickhouse}.yml
+#  - ./.docker-compose/databases/${MONGO:-mongo}.yml
+
+  # Messaging/Brokers
+#  - ./.docker-compose/messaging/${REDIS:-redis}.yml
+#  - ./.docker-compose/messaging/${CENTRIFUGO:-centrifugo}.yml
+#  - ./.docker-compose/messaging/${KAFKA:-kafka}.yml
+
+  # Tools
+#  - ./.docker-compose/tools/${JS_BUILDER:-jsbuilder}.yml
+#  - ./.docker-compose/tools/${MAILPIT:-mailpit}.yml
+#  - ./.docker-compose/tools/${STORAGE:-storage}.yml
+#  - ./.docker-compose/tools/${OPENOBSERVE:-openobserve}.yml
+
+  # Networks
+  - ./.docker-compose/${NETWORKS:-networks}.yml

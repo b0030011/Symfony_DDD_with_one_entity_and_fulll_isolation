@@ -1,0 +1,16 @@
+services:
+  nginx-reverse-proxy:
+    build: ../../nginx-reverse-proxy
+    container_name: symfony_reverse-proxy
+    depends_on:
+      - nginx
+    links:
+      - nginx
+    volumes:
+      - ../../nginx-reverse-proxy/local.antisleep.ru.conf:/etc/nginx/conf.d/local.antisleep.ru.conf
+#      - ../../nginx-reverse-proxy/local-storage.antisleep.ru.conf:/etc/nginx/conf.d/local-storage.antisleep.ru.conf
+      - ../../log/nginx-reverse-proxy:/var/log/nginx
+    ports:
+      - "80:80"
+    networks:
+      app_net:

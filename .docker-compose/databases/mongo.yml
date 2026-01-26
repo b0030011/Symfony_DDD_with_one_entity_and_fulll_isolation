@@ -1,0 +1,13 @@
+services:
+  mongo:
+    image: mongo
+    container_name: cm_mongo
+    profiles:
+      - mongo
+      - db
+      - all
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    networks:
+      - app_net

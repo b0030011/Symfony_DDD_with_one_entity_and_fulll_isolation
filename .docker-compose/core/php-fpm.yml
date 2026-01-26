@@ -1,0 +1,19 @@
+services:
+  php-fpm:
+    build:
+      context: ../../php-fpm
+      args:
+        PHP_VERSION: 8.4
+        ANTISLEEP_ENV: local
+        PHP_INI_ENV: development
+    container_name: symfony_php
+    #    extra_hosts:
+    #      - "local-storage.antisleep.ru:172.16.238.10"
+    #      - "ksupt.sldv.mosgortrans.com:10.68.1.74"
+    ports:
+      - "9000:9000"
+    volumes:
+      - ../../app/:/app/
+      - ../../php-fpm/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    networks:
+      app_net:

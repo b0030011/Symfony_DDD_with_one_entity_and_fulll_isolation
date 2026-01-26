@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:18.0
+    container_name: symfony_postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: symfony_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+      - "-c"
+      - "log_min_messages=panic"
+    volumes:
+      - ../../db_dump:/db_dump
+    #      - ./postgres/data:/var/lib/postgresql/data
+    networks:
+      app_net:
+  #        ipv4_address: 172.20.0.10
+
