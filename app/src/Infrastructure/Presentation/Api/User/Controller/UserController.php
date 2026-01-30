@@ -33,7 +33,7 @@ readonly class UserController
     {
         $data = $request->request->all();
 
-        if (!isset($data['email'], $data['password'], $data['role'])) {
+        if (!isset($data['email'], $data['password'], $data['role'], $data['index'], $data['street'])) {
             return new JsonResponse(['error' => 'Missing fields'], Response::HTTP_BAD_REQUEST);
         }
 

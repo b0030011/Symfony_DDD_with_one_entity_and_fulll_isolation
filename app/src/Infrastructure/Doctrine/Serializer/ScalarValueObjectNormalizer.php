@@ -26,7 +26,33 @@ final class ScalarValueObjectNormalizer implements NormalizerInterface, Denormal
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): mixed
     {
         try {
-            return new $type($data);
+            $reflection = new \ReflectionClass($type);
+            $constructor = $reflection->getConstructor();
+
+            if (!$constructor) {
+                throw new NotNormalizableValueException(
+                    sprintf('Expected VO %s', $type)
+                );
+            }
+
+            $numParameters = $constructor->getNumberOfParameters();
+            if ($numParameters === 1) {
+                return new $type($data);
+            }
+
+            if (!is_array($data)) {
+                throw new NotNormalizableValueException(
+                    sprintf('Expected array for %s, got %s', $type, gettype($data))
+                );
+            }
+
+            $args = [];
+            foreach ($data as $param) {
+                $args[] = $param;
+            }
+
+            return new $type(...$args);
+
         } catch (\Throwable $e) {
             throw new NotNormalizableValueException(
                 sprintf('Cannot denormalize %s from string "%s".', $type, $data),

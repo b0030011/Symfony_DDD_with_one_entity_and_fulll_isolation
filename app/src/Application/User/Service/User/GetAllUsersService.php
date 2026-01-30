@@ -19,7 +19,8 @@ readonly class GetAllUsersService
             return [
                 'id' => $user->getId()->value(),
                 'email' => $user->getEmail()->value(),
-                'roles' => $user->getRoles()->value()
+                'roles' => $user->getRoles()->value(),
+                'address' => $user->getAddress()->value()
             ];
         }, $users);
     }

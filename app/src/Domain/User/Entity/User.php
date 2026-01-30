@@ -2,6 +2,7 @@
 
 namespace App\Domain\User\Entity;
 
+use App\Domain\User\ValueObject\Address;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Id;
 use App\Domain\User\ValueObject\Password;
@@ -12,6 +13,7 @@ class User
     protected ?Id $id;
     private function __construct(
         private Email $email,
+        private Address $address,
         private Roles $roles,
         private Password $password,
     ) {
@@ -21,10 +23,11 @@ class User
 
     public static function create(
         Email $email,
+        Address $address,
         Roles $roles,
         Password $password
     ): self {
-        return new self($email, $roles, $password);
+        return new self($email, $address, $roles, $password);
     }
 
     private function validate(): void
@@ -81,4 +84,17 @@ class User
 
         return $this;
     }
+
+    public function getAddress(): Address
+    {
+        return $this->address;
+    }
+
+    public function setAddress(Address $address): static
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
 }

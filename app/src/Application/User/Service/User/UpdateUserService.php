@@ -5,6 +5,7 @@ namespace App\Application\User\Service\User;
 use App\Domain\Contract\PasswordHasherInterface;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Domain\User\ValueObject\Address;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
 use App\Domain\User\ValueObject\Roles;
@@ -37,6 +38,10 @@ readonly class UpdateUserService
             new Password($data['password']);
             $hashedPassword = $this->passwordHasher->hash($data['password']);
             $user->setPassword(new Password($hashedPassword));
+        }
+
+        if (isset($data['index']) && $data['street']) {
+            $user->setAddress(new Address($data['index'], $data['street']));
         }
 
         $this->userRepository->update($user);

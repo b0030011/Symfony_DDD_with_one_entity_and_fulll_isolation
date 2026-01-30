@@ -5,6 +5,7 @@ namespace App\Application\User\Service\User;
 use App\Domain\Contract\PasswordHasherInterface;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
+use App\Domain\User\ValueObject\Address;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Password;
 use App\Domain\User\ValueObject\Roles;
@@ -28,6 +29,7 @@ readonly class CreateUserService
 
         $user = User::create(
             $email,
+            new Address($data['index'], $data['street']),
             new Roles($data['role']),
             new Password($hashedPassword)
         );

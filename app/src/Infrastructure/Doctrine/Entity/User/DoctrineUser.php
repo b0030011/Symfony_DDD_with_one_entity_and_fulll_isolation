@@ -19,6 +19,12 @@ class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'integer')]
     private ?int $id;
 
+    /**
+     * @var list<string> The user roles
+     */
+    #[ORM\Column(type: 'json')]
+    private array $address = [];
+
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email;
 
@@ -86,6 +92,18 @@ class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(?string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getAddress(): array
+    {
+        return $this->address;
+    }
+
+    public function setAddress(array $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }
