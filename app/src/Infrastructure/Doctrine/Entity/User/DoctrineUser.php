@@ -2,6 +2,11 @@
 
 namespace App\Infrastructure\Doctrine\Entity\User;
 
+use App\Domain\User\ValueObject\Address;
+use App\Domain\User\ValueObject\Email;
+use App\Domain\User\ValueObject\Id;
+use App\Domain\User\ValueObject\Password;
+use App\Domain\User\ValueObject\Roles;
 use App\Infrastructure\Doctrine\Repository\User\DoctrineUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -16,56 +21,42 @@ class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-    #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    #[ORM\Column(type: 'user_id')]
+    private ?Id $id;
 
-    /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column(type: 'json')]
-    private array $address = [];
+    #[ORM\Column(type: 'user_address')]
+    private Address $address;
 
-    #[ORM\Column(length: 180, unique: true)]
-    private ?string $email;
+    #[ORM\Column(type: 'user_email', length: 180, unique: true)]
+    private Email|null $email;
 
-    /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column(type: 'json')]
-    private array $roles = [];
+    #[ORM\Column(type: 'user_roles')]
+    private Roles $roles;
 
-    /**
-     * @var ?string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password;
+    #[ORM\Column(type: 'user_password')]
+    private ?Password $password;
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
-        return (string) $this->email;
+        return $this->email ? $this->email->value() : '';
     }
 
-    public function getId(): ?int
+    public function getId(): ?Id
     {
         return $this->id ?? null;
     }
 
     public function setId(?int $id): void
     {
-        $this->id = $id;
+        $this->id = new Id($id);
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): ?Email
     {
         return $this->email;
     }
 
-    public function setEmail(?string $email): static
+    public function setEmail(?Email $email): static
     {
         $this->email = $email;
 
@@ -74,10 +65,10 @@ class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRoles(): array
     {
-        return $this->roles;
+        return $this->roles->value() ?: ['ROLE_USER'];
     }
 
-    public function setRoles(array $roles): static
+    public function setRoles(Roles $roles): static
     {
         $this->roles = $roles;
 
@@ -86,22 +77,22 @@ class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getPassword(): ?string
     {
-        return $this->password;
+        return $this->password->value();
     }
 
-    public function setPassword(?string $password): static
+    public function setPassword(?Password $password): static
     {
         $this->password = $password;
 
         return $this;
     }
 
-    public function getAddress(): array
+    public function getAddress(): ?Address
     {
         return $this->address;
     }
 
-    public function setAddress(array $address): self
+    public function setAddress(Address $address): self
     {
         $this->address = $address;
 

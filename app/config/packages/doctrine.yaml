@@ -6,9 +6,15 @@ doctrine:
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '16'
 
+        types:
+            user_email: App\Infrastructure\Doctrine\Type\EmailType
+            user_address: App\Infrastructure\Doctrine\Type\AddressType
+            user_roles: App\Infrastructure\Doctrine\Type\RolesType
+            user_password: App\Infrastructure\Doctrine\Type\PasswordType
+            user_id: App\Infrastructure\Doctrine\Type\IdType
+
         profiling_collect_backtrace: '%kernel.debug%'
     orm:
-
 
 #        auto_generate_proxy_classes: true
 #        enable_lazy_ghost_objects: true

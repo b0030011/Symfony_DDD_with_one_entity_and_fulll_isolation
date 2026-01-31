@@ -19,4 +19,9 @@ final readonly class Id implements ValueObjectInterface
     {
         return $this->id;
     }
+
+    public function __toString(): string
+    {
+        return (string) $this->id;
+    }
 }

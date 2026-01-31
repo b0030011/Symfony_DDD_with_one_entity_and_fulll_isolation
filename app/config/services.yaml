@@ -31,11 +31,3 @@ services:
         resource: '../src/Infrastructure/Doctrine/Mapper/*'
         tags:
             - { name: 'doctrine.repository_service' }
-
-    App\Infrastructure\Doctrine\Serializer\FromDoctrineNormalizer:
-        tags:
-            - { name: 'serializer.normalizer', priority: 1001 }
-
-    App\Infrastructure\Doctrine\Serializer\ToDoctrineNormalizer:
-        tags:
-            - { name: 'serializer.normalizer', priority: 1002 }

@@ -21,23 +21,28 @@ readonly class UpdateUserService
 
     public function __invoke(array $data, int $id): void
     {
-        /** @var User $user */
         $user = $this->userRepository->getOneById($id);
 
         if (null === $user) {
             throw new \DomainException('User not found');
         }
 
-        if (isset($data['email'])) {
-            $email = new Email($data['email']);
-        }
+        $email = $user->getEmail();
+        $address = $user->getAddress();
+        $roles = $user->getRoles();
+        $password = $user->getPassword();
 
-        if (isset($data['role'])) {
-            $role = new Roles($data['role']);
+        if (isset($data['email'])) {
+            $newEmail = new Email($data['email']);
+            if ($newEmail->value() !== $user->getEmail()->value()) {
+                if ($this->userRepository->existsByEmail($newEmail)) {
+                    throw new \DomainException('Email already exists');
+                }
+                $email = $newEmail;
+            }
         }
 
         if (isset($data['password'])) {
-            new Password($data['password']);
             $hashedPassword = $this->passwordHasher->hash($data['password']);
             $password = new Password($hashedPassword);
         }
@@ -46,14 +51,18 @@ readonly class UpdateUserService
             $address = new Address($data['index'], $data['city'], $data['street']);
         }
 
-        $newUser = User::create(
+        if (isset($data['role'])) {
+            $roles = new Roles($data['role']);
+        }
+
+        $updatedUser = User::create(
             $user->getId(),
-            $email ?? $user->getEmail(),
-            $address ?? $user->getAddress(),
-            $role ?? $user->getRoles(),
-            $password ?? $user->getPassword()
+            $email,
+            $address,
+            $roles,
+            $password
         );
 
-        $this->userRepository->update($newUser);
+        $this->userRepository->update($updatedUser);
     }
 }
