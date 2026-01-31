@@ -40,7 +40,7 @@ class User
         return $this->id;
     }
 
-    protected function setId(Id $id): static
+    private function setId(Id $id): static
     {
         if (empty($this->id)) {
             $this->id = $id;
@@ -54,7 +54,7 @@ class User
         return $this->email;
     }
 
-    protected function setEmail(Email $email): static
+    private function setEmail(Email $email): static
     {
         $this->email = $email;
 
@@ -66,7 +66,7 @@ class User
         return $this->roles;
     }
 
-    protected function setRoles(Roles $roles): static
+    private function setRoles(Roles $roles): static
     {
         $this->roles = $roles;
 
@@ -78,7 +78,7 @@ class User
         return $this->password;
     }
 
-    protected function setPassword(Password $password): static
+    private function setPassword(Password $password): static
     {
         $this->password = $password;
 
@@ -90,7 +90,7 @@ class User
         return $this->address;
     }
 
-    protected function setAddress(Address $address): static
+    private function setAddress(Address $address): static
     {
         $this->address = $address;
 
