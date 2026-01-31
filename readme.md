@@ -12,6 +12,7 @@
 Реализация через Symfony Serializer. Минимум кода, максимальная простота, но ограниченная гибкость.
 - Быстрая реализация
 - Меньше boilerplate кода
+- Поддержка Value Objects
 - Подходит для прототипов и небольших проектов
 
 ### `doctrine_orm_php_mapping` - Custom DBAL Types
