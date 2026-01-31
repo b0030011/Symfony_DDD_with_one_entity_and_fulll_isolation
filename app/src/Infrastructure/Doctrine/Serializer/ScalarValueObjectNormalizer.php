@@ -62,12 +62,7 @@ final class ScalarValueObjectNormalizer implements NormalizerInterface, Denormal
 
             $name = lcfirst($parameter->getName());
             $type = $parameter->getType()->getName();
-
             $VO[$name] = $type;
-
-            if (!isset($VO['id'])) {
-                $VO['id'] = str_replace(ucfirst($parameter->getName()), 'Id', $type);
-            }
         }
 
         return $VO;
