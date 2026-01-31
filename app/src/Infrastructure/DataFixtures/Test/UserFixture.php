@@ -15,7 +15,8 @@ class UserFixture extends Fixture
         $user = new DoctrineUser()
             ->setEmail('john.doe@example.com')
             ->setPassword(password_hash('secret', PASSWORD_BCRYPT))
-            ->setRoles(['ROLE_USER']);
+            ->setRoles(['ROLE_USER'])
+            ->setAddress(['index' => '117342', 'city' => 'Moscow', 'street' => 'Моховая']);
 
         $manager->persist($user);
 

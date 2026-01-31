@@ -85,6 +85,9 @@ class UserControllerTest extends ApiTestCase
             'email'    => 'alice@example.com',
             'password' => 'strong-pass',
             'role'     => ['ROLE_USER'],
+            'index' => '117342',
+            'city' => 'Moscow',
+            'street' => 'Моховая',
         ];
 
         $this->client()->request('POST', '/register', $payload);
@@ -123,6 +126,9 @@ class UserControllerTest extends ApiTestCase
             'email'    => 'john.doe@example.com',
             'password' => 'any',
             'role'     => ['ROLE_USER'],
+            'index' => '117342',
+            'city' => 'Moscow',
+            'street' => 'Моховая',
         ];
 
         $this->client()->request('POST', '/register', $payload);
@@ -148,7 +154,10 @@ class UserControllerTest extends ApiTestCase
         $payload = [
             'email' => 'john.renamed@example.com',
             'password' => 'new-password',
-            'role' => ['ROLE_USER']
+            'role' => ['ROLE_USER'],
+            'index' => '117342',
+            'city' => 'Moscow',
+            'street' => 'Моховая',
         ];
 
         $this->client()->request('POST', '/update/'.$user->getId(), $payload);
@@ -172,7 +181,10 @@ class UserControllerTest extends ApiTestCase
         $payload = [
             'email' => 'whatever@example.com',
             'password' => 'pass',
-            'role' => ['ROLE_USER']
+            'role' => ['ROLE_USER'],
+            'index' => '117342',
+            'city' => 'Moscow',
+            'street' => 'Моховая',
         ];
 
         $this->client()->request('POST', '/update/0', $payload);
@@ -194,7 +206,10 @@ class UserControllerTest extends ApiTestCase
         $payload = [
             'email' => 'notfound@example.com',
             'password' => 'pass',
-            'role' => ['ROLE_USER']
+            'role' => ['ROLE_USER'],
+            'index' => '117342',
+            'city' => 'Moscow',
+            'street' => 'Моховая',
         ];
 
         $this->client()->request('POST', '/update/999999', $payload);
