@@ -45,7 +45,12 @@ readonly abstract class AbstractDoctrineMapper
         $normalizedData = array_filter($this->serializer->normalize($doctrineObject));
         return $this->serializer->denormalize(
             $normalizedData,
-            static::DOMAIN_CLASS_NAME
+            static::DOMAIN_CLASS_NAME,
+            null,
+            [
+                AbstractNormalizer::DEFAULT_CONSTRUCTOR_ARGUMENTS => [],
+                'disable_type_enforcement' => true,
+            ]
         );
     }
 }

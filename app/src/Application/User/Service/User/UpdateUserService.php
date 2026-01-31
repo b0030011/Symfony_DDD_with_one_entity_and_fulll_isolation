@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\User\Service\User;
 
 use App\Domain\Contract\PasswordHasherInterface;
@@ -27,23 +29,31 @@ readonly class UpdateUserService
         }
 
         if (isset($data['email'])) {
-            $user->setEmail(new Email($data['email']));
+            $email = new Email($data['email']);
         }
 
         if (isset($data['role'])) {
-            $user->setRoles(new Roles($data['role']));
+            $role = new Roles($data['role']);
         }
 
         if (isset($data['password'])) {
             new Password($data['password']);
             $hashedPassword = $this->passwordHasher->hash($data['password']);
-            $user->setPassword(new Password($hashedPassword));
+            $password = new Password($hashedPassword);
         }
 
         if (isset($data['index']) && $data['street']) {
-            $user->setAddress(new Address($data['index'], $data['street']));
+            $address = new Address($data['index'], $data['street']);
         }
 
-        $this->userRepository->update($user);
+        $newUser = User::create(
+            $user->getId(),
+            $email ?? $user->getEmail(),
+            $address ?? $user->getAddress(),
+            $role ?? $user->getRoles(),
+            $password ?? $user->getPassword()
+        );
+
+        $this->userRepository->update($newUser);
     }
 }

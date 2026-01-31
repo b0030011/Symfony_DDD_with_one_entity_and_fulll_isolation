@@ -10,24 +10,24 @@ use App\Domain\User\ValueObject\Roles;
 
 class User
 {
-    protected ?Id $id;
     private function __construct(
-        private Email $email,
-        private Address $address,
-        private Roles $roles,
-        private Password $password,
+        private ?Id $id,
+        private ?Email $email,
+        private ?Address $address,
+        private ?Roles $roles,
+        private ?Password $password,
     ) {
-        $this->id = null;
         $this->validate();
     }
 
     public static function create(
+        ?Id $id,
         Email $email,
         Address $address,
         Roles $roles,
         Password $password
     ): self {
-        return new self($email, $address, $roles, $password);
+        return new self($id, $email, $address, $roles, $password);
     }
 
     private function validate(): void
@@ -35,12 +35,12 @@ class User
         // Бизнес-правило: роль админа требует подтвержденного email
     }
 
-    public function getId(): ?ID
+    public function getId(): ?Id
     {
         return $this->id;
     }
 
-    public function setId(ID $id): static
+    protected function setId(Id $id): static
     {
         if (empty($this->id)) {
             $this->id = $id;
@@ -54,7 +54,7 @@ class User
         return $this->email;
     }
 
-    public function setEmail(Email $email): static
+    protected function setEmail(Email $email): static
     {
         $this->email = $email;
 
@@ -66,7 +66,7 @@ class User
         return $this->roles;
     }
 
-    public function setRoles(Roles $roles): static
+    protected function setRoles(Roles $roles): static
     {
         $this->roles = $roles;
 
@@ -78,7 +78,7 @@ class User
         return $this->password;
     }
 
-    public function setPassword(Password $password): static
+    protected function setPassword(Password $password): static
     {
         $this->password = $password;
 
@@ -90,7 +90,7 @@ class User
         return $this->address;
     }
 
-    public function setAddress(Address $address): static
+    protected function setAddress(Address $address): static
     {
         $this->address = $address;
 

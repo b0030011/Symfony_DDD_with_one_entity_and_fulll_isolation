@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\User\Service\User;
 
 use App\Domain\User\Entity\User;
@@ -17,7 +19,7 @@ readonly class GetAllUsersService
 
         return array_map(static function (User $user) {
             return [
-                'id' => $user->getId()->value(),
+                'id' => $user->getId()?->value(),
                 'email' => $user->getEmail()->value(),
                 'roles' => $user->getRoles()->value(),
                 'address' => $user->getAddress()->value()

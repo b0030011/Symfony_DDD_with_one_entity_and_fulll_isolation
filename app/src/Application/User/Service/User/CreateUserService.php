@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\User\Service\User;
 
 use App\Domain\Contract\PasswordHasherInterface;
@@ -28,6 +30,7 @@ readonly class CreateUserService
         $hashedPassword = $this->passwordHasher->hash($data['password']);
 
         $user = User::create(
+            null,
             $email,
             new Address($data['index'], $data['street']),
             new Roles($data['role']),

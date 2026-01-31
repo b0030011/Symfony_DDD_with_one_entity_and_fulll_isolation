@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\Doctrine\Repository;
 
-use App\Domain\User\ValueObject\Id;
 use Doctrine\ORM\Exception\ORMException;
 
 trait DoctrineRepositoryTrait
@@ -32,7 +31,6 @@ trait DoctrineRepositoryTrait
         $doctrineObject = $this->mapper->toDoctrine($domainObject);
         $this->getEntityManager()->persist($doctrineObject);
         $this->getEntityManager()->flush();
-        $domainObject->setId(new ID($doctrineObject->getId()));
     }
 
     /**
