@@ -32,7 +32,7 @@ readonly class CreateUserService
         $user = User::create(
             null,
             $email,
-            new Address($data['index'], $data['street']),
+            new Address($data['index'], $data['city'], $data['street']),
             new Roles($data['role']),
             new Password($hashedPassword)
         );

@@ -6,7 +6,7 @@ use App\Domain\Contract\ValueObjectInterface;
 
 final readonly class Address implements ValueObjectInterface
 {
-    public function __construct(private string $index, private string $street)
+    public function __construct(private string $index, private string $city, private string $street)
     {
         $this->validate();
     }
@@ -20,6 +20,7 @@ final readonly class Address implements ValueObjectInterface
     {
         return [
             'Index' => $this->index,
+            'city' => $this->city,
             'Street' => $this->street
         ];
     }

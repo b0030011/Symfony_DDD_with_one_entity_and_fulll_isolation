@@ -7,23 +7,14 @@ namespace App\Infrastructure\Doctrine\Serializer;
 use App\Domain\Contract\ValueObjectInterface;
 use Symfony\Component\Serializer\Exception\NotNormalizableValueException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-final class ScalarValueObjectNormalizer implements NormalizerInterface, DenormalizerInterface, SerializerAwareInterface
+final class FromDoctrineNormalizer implements DenormalizerInterface, SerializerAwareInterface
 {
     public function setSerializer(SerializerInterface $serializer): void
     {
         // Not used here
-    }
-
-    public function normalize(mixed $data, ?string $format = null, array $context = []): array|\ArrayObject|bool|float|int|null|string
-    {
-        if ($data instanceof ValueObjectInterface) {
-            return $data->value();
-        }
-        return $data;
     }
 
     public function denormalize(mixed $data, string $type, ?string $format = null, array $context = []): string|object
@@ -94,18 +85,18 @@ final class ScalarValueObjectNormalizer implements NormalizerInterface, Denormal
 
             if ($numParameters === 1) {
                 $instance = new $voType($value);
-                $setter->invoke($entity, $instance);
-                return;
+            } else {
+
+                if (!is_array($value)) {
+                    throw new NotNormalizableValueException(
+                        sprintf('Expected array for %s, got %s', $vo[ucfirst($propertyName)], gettype($value))
+                    );
+                }
+
+                $args = array_values($value);
+                $instance = new $voType(...$args);
             }
 
-            if (!is_array($value)) {
-                throw new NotNormalizableValueException(
-                    sprintf('Expected array for %s, got %s', $vo[ucfirst($propertyName)], gettype($value))
-                );
-            }
-
-            $args = array_values($value);
-            $instance = new $voType(...$args);
             $setter->invoke($entity, $instance);
             return;
         }
@@ -116,16 +107,11 @@ final class ScalarValueObjectNormalizer implements NormalizerInterface, Denormal
         }
     }
 
-    public function supportsNormalization(mixed $data, ?string $format = null, array $context = []): bool
-    {
-        return $data instanceof ValueObjectInterface;
-    }
-
     public function supportsDenormalization(mixed $data, string $type, ?string $format = null, array $context = []): bool
     {
         return class_exists($type) &&
             !is_subclass_of($type, ValueObjectInterface::class) &&
-            strpos($type, 'App\Domain\\') === 0;
+            str_starts_with($type, 'App\Domain\\');
     }
 
     public function getSupportedTypes(?string $format): array
@@ -135,3 +121,4 @@ final class ScalarValueObjectNormalizer implements NormalizerInterface, Denormal
         ];
     }
 }
+

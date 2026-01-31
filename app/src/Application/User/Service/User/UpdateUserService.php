@@ -42,8 +42,8 @@ readonly class UpdateUserService
             $password = new Password($hashedPassword);
         }
 
-        if (isset($data['index']) && $data['street']) {
-            $address = new Address($data['index'], $data['street']);
+        if (isset($data['index'], $data['street'], $data['city'])) {
+            $address = new Address($data['index'], $data['city'], $data['street']);
         }
 
         $newUser = User::create(

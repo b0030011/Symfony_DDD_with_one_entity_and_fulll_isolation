@@ -27,11 +27,15 @@ services:
         '@App\Infrastructure\Doctrine\Repository\User\DoctrineUserRepository'
 
     # Репозиторий Doctrine
-    App\Infrastructure\Doctrine\Repository\User\DoctrineUserRepository:
-        arguments:
-            $mapper: '@App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper'
-        tags: [ 'doctrine.repository_service' ]
+    App\Infrastructure\Doctrine\Mapper\:
+        resource: '../src/Infrastructure/Doctrine/Mapper/*'
+        tags:
+            - { name: 'doctrine.repository_service' }
 
-    App\Infrastructure\Doctrine\Serializer\ScalarValueObjectNormalizer:
+    App\Infrastructure\Doctrine\Serializer\FromDoctrineNormalizer:
         tags:
             - { name: 'serializer.normalizer', priority: 1001 }
+
+    App\Infrastructure\Doctrine\Serializer\ToDoctrineNormalizer:
+        tags:
+            - { name: 'serializer.normalizer', priority: 1002 }
