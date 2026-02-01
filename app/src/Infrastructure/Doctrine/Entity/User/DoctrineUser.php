@@ -2,6 +2,8 @@
 
 namespace App\Infrastructure\Doctrine\Entity\User;
 
+use App\Infrastructure\Doctrine\Embeddable\AddressEmbeddable;
+use App\Infrastructure\Doctrine\Embeddable\EmailEmbeddable;
 use App\Infrastructure\Doctrine\Repository\User\DoctrineUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -10,78 +12,54 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: DoctrineUserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])] // Важно!
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
-    private ?int $id;
+    private ?int $id = null;
 
-    /**
-     * @var list<string> The user roles
-     */
-    #[ORM\Column(type: 'json')]
-    private array $address = [];
+    #[ORM\Embedded(class: AddressEmbeddable::class, columnPrefix: 'address_')]
+    private AddressEmbeddable $address;
 
-    #[ORM\Column(length: 180, unique: true)]
-    private ?string $email;
+    #[ORM\Embedded(class: EmailEmbeddable::class, columnPrefix: false)]
+    private EmailEmbeddable $email;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    /**
-     * @var ?string The hashed password
-     */
-    #[ORM\Column]
-    private ?string $password;
-
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
+    #[ORM\Column(type: 'string')]
+    private ?string $password = null;
 
     public function getId(): ?int
     {
-        return $this->id ?? null;
+        return $this->id;
     }
 
-    public function setId(?int $id): void
+    public function setId(?int $id): static
     {
         $this->id = $id;
+        return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): EmailEmbeddable
     {
         return $this->email;
     }
-
-    public function setEmail(?string $email): static
+    public function getAddress(): AddressEmbeddable
     {
-        $this->email = $email;
-
-        return $this;
+        return $this->address;
     }
 
-    public function getRoles(): array
+    public function getUserIdentifier(): string
     {
+        return $this->email->getEmail();
+    }
+
+    public function getRoles(): array {
         return $this->roles;
-    }
-
-    public function setRoles(array $roles): static
-    {
-        $this->roles = $roles;
-
-        return $this;
     }
 
     public function getPassword(): ?string
@@ -89,22 +67,26 @@ class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(?string $password): static
+    public function setEmail(EmailEmbeddable $email): static
     {
-        $this->password = $password;
-
+        $this->email = $email;
         return $this;
     }
 
-    public function getAddress(): array
+    public function setAddress(AddressEmbeddable $address): static
     {
-        return $this->address;
+        $this->address = $address; return $this;
     }
 
-    public function setAddress(array $address): self
+    public function setRoles(array $roles): static
     {
-        $this->address = $address;
+        $this->roles = $roles;
+        return $this;
+    }
 
+    public function setPassword(?string $password): static
+    {
+        $this->password = $password;
         return $this;
     }
 }

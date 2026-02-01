@@ -17,13 +17,20 @@ readonly class Roles implements ValueObjectInterface
             throw new \DomainException('Password must be at least 8 characters');
         }
 
-//        if (!in_array($this->roles, ['ROLE_ADMIN', 'ROLE_MODERATOR'])) {
-//            throw new \DomainException('Password must contain uppercase letter');
-//        }
+        foreach ($this->roles as $role) {
+            if (!is_string($role) || !str_starts_with($role, 'ROLE_')) {
+                throw new \DomainException('Role must start with ROLE_ prefix');
+            }
+        }
     }
 
     public function value(): array
     {
         return $this->roles;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles, true);
     }
 }

@@ -54,6 +54,6 @@ readonly class UpdateUserService
             $password ?? $user->getPassword()
         );
 
-        $this->userRepository->update($newUser);
+        $this->userRepository->save($newUser);
     }
 }

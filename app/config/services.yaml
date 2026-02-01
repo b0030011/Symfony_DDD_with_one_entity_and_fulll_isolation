@@ -26,16 +26,5 @@ services:
     App\Domain\User\Repository\UserRepositoryInterface:
         '@App\Infrastructure\Doctrine\Repository\User\DoctrineUserRepository'
 
-    # Репозиторий Doctrine
-    App\Infrastructure\Doctrine\Mapper\:
-        resource: '../src/Infrastructure/Doctrine/Mapper/*'
-        tags:
-            - { name: 'doctrine.repository_service' }
-
-    App\Infrastructure\Doctrine\Serializer\FromDoctrineNormalizer:
-        tags:
-            - { name: 'serializer.normalizer', priority: 1001 }
-
-    App\Infrastructure\Doctrine\Serializer\ToDoctrineNormalizer:
-        tags:
-            - { name: 'serializer.normalizer', priority: 1002 }
+    App\Infrastructure\Doctrine\Adapter\UserAdapter:
+        autowire: true
