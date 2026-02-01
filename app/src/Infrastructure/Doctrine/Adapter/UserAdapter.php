@@ -20,22 +20,6 @@ class UserAdapter
         );
     }
 
-//    public static function toDoctrine(DomainUser $domainUser): DoctrineUser
-//    {
-//        $doctrineUser = new DoctrineUser();
-//
-//        if ($domainUser->getId()) {
-//            $doctrineUser->setId((int)$domainUser->getId()->value());
-//        }
-//
-//        $doctrineUser->setEmail($domainUser->getEmail());
-//        $doctrineUser->setAddress($domainUser->getAddress());
-//        $doctrineUser->setRoles($domainUser->getRoles());
-//        $doctrineUser->setPassword($domainUser->getPassword());
-//
-//        return $doctrineUser;
-//    }
-
     public static function populateDoctrine(DomainUser $domainUser, DoctrineUser $doctrineUser): void
     {
         $doctrineUser->setId($domainUser->getId()?->value());
