@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Doctrine\Repository\User;
 
+use App\Domain\Pagination\PaginatedResult;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
@@ -65,14 +66,26 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
         return $this->findOneBy(['email.email' => $email->value()]) !== null;
     }
 
-    public function getAll(): array
+    public function getAll(int $page = 1, int $limit = 10): PaginatedResult
     {
-        $doctrineUsers = $this->findAll();
+        $offset = max(0, ($page - 1) * $limit);
 
-        return array_map(
-            static fn(DoctrineUser $doctrineUser) => UserAdapter::toDomain($doctrineUser),
+        $doctrineUsers = $this->createQueryBuilder('u')
+            ->orderBy('u.id', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+
+        $countQb = $this->createQueryBuilder('u')->select('COUNT(u.id)');
+        $total = (int)$countQb->getQuery()->getSingleScalarResult();
+
+        $items = array_map(
+            static fn(DoctrineUser $user) => UserAdapter::toDomain($user),
             $doctrineUsers
         );
+
+        return new PaginatedResult($items, $total, $limit);
     }
 
     public function findOneByEmail(Email $email): ?User
