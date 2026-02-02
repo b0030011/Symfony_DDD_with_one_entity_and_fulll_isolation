@@ -16,11 +16,9 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineUserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
-    const string DOCTRINE_CLASS_NAME = DoctrineUser::class;
-
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, self::DOCTRINE_CLASS_NAME);
+        parent::__construct($registry, DoctrineUser::class);
     }
 
     public function delete(User $user): void
@@ -30,10 +28,7 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
             return;
         }
 
-        $doctrineUser = $this->getEntityManager()->find(
-            self::DOCTRINE_CLASS_NAME,
-            $id->value()
-        );
+        $doctrineUser = $this->find($id->value());
 
         if ($doctrineUser) {
             $this->getEntityManager()->remove($doctrineUser);
@@ -58,7 +53,7 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
 
     public function getOneById(int $id): ?User
     {
-        $doctrineUser = $this->getEntityManager()->find(DoctrineUser::class, $id);
+        $doctrineUser = $this->find($id);
         return $doctrineUser ? UserAdapter::toDomain($doctrineUser) : null;
     }
 
@@ -68,27 +63,17 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
      */
     public function doctrineFindOneById(int $id): object|string|null
     {
-        return $this->getEntityManager()->find(self::DOCTRINE_CLASS_NAME, $id);
+        return $this->find($id);
     }
 
     public function existsByEmail(Email $email): bool
     {
-        $doctrineUser = $this->getEntityManager()
-            ->getRepository(self::DOCTRINE_CLASS_NAME)
-            ->findOneBy(['email.email' => $email->value()]);
-
-        return $doctrineUser !== null;
+        return $this->findOneBy(['email.email' => $email->value()]) !== null;
     }
 
     public function getAll(): array
     {
-        $doctrineUsers = $this->getEntityManager()
-            ->getRepository(self::DOCTRINE_CLASS_NAME)
-            ->findAll();
-
-        if (empty($doctrineUsers)) {
-            return [];
-        }
+        $doctrineUsers = $this->findAll();
 
         return array_map(
             static fn(DoctrineUser $doctrineUser) => UserAdapter::toDomain($doctrineUser),
@@ -98,13 +83,7 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
 
     public function findOneByEmail(Email $email): ?User
     {
-        $doctrineUser = $this->getEntityManager()->getRepository(self::DOCTRINE_CLASS_NAME)
-            ->findOneBy(['email' => $email]);
-
-        if (!$doctrineUser) {
-            return null;
-        }
-
-        return UserAdapter::toDomain($doctrineUser);
+        $doctrineUser = $this->findOneBy(['email' => $email]);
+        return $doctrineUser ? UserAdapter::toDomain($doctrineUser) : null;
     }
 }
