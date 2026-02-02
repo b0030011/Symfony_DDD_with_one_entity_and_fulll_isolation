@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\User\Service\User;
 
+use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
 
 readonly class GetOneUserService
@@ -12,19 +13,8 @@ readonly class GetOneUserService
         private UserRepositoryInterface $userRepository,
     ) {}
 
-    public function __invoke(int $id): ?array
+    public function __invoke(int $id): ?User
     {
-        $user = $this->userRepository->getOneById($id);
-
-        if (null === $user) {
-            return null;
-        }
-
-        return [
-            'id' => $user->getId()?->value(),
-            'email' => $user->getEmail()->value(),
-            'roles' => $user->getRoles()->value(),
-            'address' => $user->getAddress()->value()
-        ];
+        return $this->userRepository->getOneById($id);
     }
 }
