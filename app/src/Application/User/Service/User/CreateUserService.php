@@ -37,6 +37,6 @@ readonly class CreateUserService
             new Password($hashedPassword)
         );
 
-        $this->userRepository->store($user);
+        $this->userRepository->save($user);
     }
 }

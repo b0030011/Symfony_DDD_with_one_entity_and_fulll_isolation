@@ -24,4 +24,28 @@ final readonly class Address implements ValueObjectInterface
             'Street' => $this->street
         ];
     }
+
+    public static function fromArray(array $data): self
+    {
+        return new self(
+            $data['index'] ?? '',
+            $data['city'] ?? '',
+            $data['street'] ?? ''
+        );
+    }
+
+    public function getIndex(): string
+    {
+        return $this->index;
+    }
+
+    public function getCity(): string
+    {
+        return $this->city;
+    }
+
+    public function getStreet(): string
+    {
+        return $this->street;
+    }
 }
