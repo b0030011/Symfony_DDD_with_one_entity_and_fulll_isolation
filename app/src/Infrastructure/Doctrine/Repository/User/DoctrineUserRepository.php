@@ -10,8 +10,6 @@ use App\Domain\User\ValueObject\Email;
 use App\Infrastructure\Doctrine\Adapter\UserAdapter;
 use App\Infrastructure\Doctrine\Entity\User\DoctrineUser;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineUserRepository extends ServiceEntityRepository implements UserRepositoryInterface
@@ -57,10 +55,6 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
         return $doctrineUser ? UserAdapter::toDomain($doctrineUser) : null;
     }
 
-    /**
-     * @throws OptimisticLockException
-     * @throws ORMException
-     */
     public function doctrineFindOneById(int $id): object|string|null
     {
         return $this->find($id);
