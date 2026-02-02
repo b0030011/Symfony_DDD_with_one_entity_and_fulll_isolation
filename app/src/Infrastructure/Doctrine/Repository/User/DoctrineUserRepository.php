@@ -14,12 +14,10 @@ use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineUserRepository extends ServiceEntityRepository implements UserRepositoryInterface
 {
-    const string DOCTRINE_CLASS_NAME = DoctrineUser::class;
-
     public function __construct(
         ManagerRegistry $registry
     ) {
-        parent::__construct($registry, self::DOCTRINE_CLASS_NAME);
+        parent::__construct($registry, DoctrineUser::class);
     }
     public function delete(User $user): void
     {
@@ -39,34 +37,25 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
 
     public function update(User $user): void
     {
-        $doctrineUser = $this->getEntityManager()->getReference(
-            self::DOCTRINE_CLASS_NAME,
-            $user->getId()->value()
-        );
-
+        $doctrineUser = $this->find($user->getId()->value());
         UserAdapter::populateDoctrine($user, $doctrineUser);
         $this->getEntityManager()->flush();
     }
 
     public function existsByEmail(Email $email): bool
     {
-        $user = $this->getEntityManager()->getRepository(self::DOCTRINE_CLASS_NAME)
-            ->findOneBy(['email' => $email->value()]);
-
-        return $user !== null;
+        return $this->findOneBy(['email' => $email->value()]) !== null;
     }
 
     public function getOneById(int $id): ?User
     {
-        $doctrineObject = $this->getEntityManager()->find(static::DOCTRINE_CLASS_NAME, new Id($id));
+        $doctrineObject = $this->find(new Id($id));
         return $doctrineObject ? UserAdapter::toDomain($doctrineObject) : null;
     }
 
     public function getAll(): array
     {
-        $doctrineUsers = $this->getEntityManager()
-            ->getRepository(self::DOCTRINE_CLASS_NAME)
-            ->findAll();
+        $doctrineUsers = $this->findAll();
 
         return array_map(
             static fn(DoctrineUser $doctrineUser) => UserAdapter::toDomain($doctrineUser),

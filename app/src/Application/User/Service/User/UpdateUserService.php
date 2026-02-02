@@ -63,6 +63,6 @@ readonly class UpdateUserService
             $password
         );
 
-        $this->userRepository->update($updatedUser);
+        $this->userRepository->save($updatedUser);
     }
 }
