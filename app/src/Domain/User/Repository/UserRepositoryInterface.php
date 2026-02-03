@@ -2,7 +2,7 @@
 
 namespace App\Domain\User\Repository;
 
-use App\Domain\Pagination\PaginatedResult;
+use App\Domain\Shared\Pagination\PaginatedResult;
 use App\Domain\User\Entity\User;
 use App\Domain\User\ValueObject\Email;
 

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Infrastructure\Presentation\Api\User\Controller;
+namespace App\Presentation\Api\User\Controller;
 
 use App\Application\Dto\PaginationParams;
 use App\Application\User\Service\User\CreateUserService;
 use App\Application\User\Service\User\GetAllUsersService;
 use App\Application\User\Service\User\GetOneUserService;
 use App\Application\User\Service\User\UpdateUserService;
-use App\Infrastructure\Presentation\Api\User\ViewModel\UserListViewModel;
-use App\Infrastructure\Presentation\Api\User\ViewModel\UserViewModel;
+use App\Presentation\Api\User\ViewModel\UserListViewModel;
+use App\Presentation\Api\User\ViewModel\UserViewModel;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
