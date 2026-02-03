@@ -17,6 +17,8 @@ class UserViewModel
             'email' => $user->getEmail()->value(),
             'roles' => $user->getRoles()->value(),
             'address' => $user->getAddress()->value(),
+            'created_at' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
+            'updated_at' => $user->getUpdatedAt()->format('Y-m-d H:i:s'),
         ];
     }
 

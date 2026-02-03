@@ -4,6 +4,7 @@ namespace App\Infrastructure\Doctrine\Entity\User;
 
 use App\Infrastructure\Doctrine\Embeddable\AddressEmbeddable;
 use App\Infrastructure\Doctrine\Embeddable\EmailEmbeddable;
+use App\Infrastructure\Doctrine\Embeddable\TimeRangeEmbeddable;
 use App\Infrastructure\Doctrine\Repository\User\DoctrineUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -12,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: DoctrineUserRepository::class)]
 #[ORM\Table(name: '`user`')]
-#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email.email'])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
@@ -32,6 +33,17 @@ class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'string')]
     private ?string $password = null;
+
+    #[ORM\Embedded(class: TimeRangeEmbeddable::class, columnPrefix: 'timestamp_')]
+    private TimeRangeEmbeddable $timestamp;
+
+    public function __construct()
+    {
+        $this->timestamp = new TimeRangeEmbeddable(
+            new \DateTimeImmutable(),
+            new \DateTimeImmutable()
+        );
+    }
 
     public function getId(): ?int
     {
@@ -87,6 +99,17 @@ class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(?string $password): static
     {
         $this->password = $password;
+        return $this;
+    }
+
+    public function getTimestamp(): TimeRangeEmbeddable
+    {
+        return $this->timestamp;
+    }
+
+    public function setTimestamp(TimeRangeEmbeddable $timestamp): static
+    {
+        $this->timestamp = $timestamp;
         return $this;
     }
 }

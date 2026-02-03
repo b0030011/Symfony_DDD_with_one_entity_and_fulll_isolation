@@ -29,6 +29,8 @@ final class Version20260123150637 extends AbstractMigration
                     address_street VARCHAR(255) NOT NULL,
                     roles JSON NOT NULL,
                     password VARCHAR(255) NOT NULL,
+                    timestamp_created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
+                    timestamp_updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL,
                     PRIMARY KEY (id)
                 )'
         );

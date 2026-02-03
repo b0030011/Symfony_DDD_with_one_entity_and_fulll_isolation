@@ -51,7 +51,8 @@ readonly class UpdateUserService
             $email ?? $user->getEmail(),
             $address ?? $user->getAddress(),
             $role ?? $user->getRoles(),
-            $password ?? $user->getPassword()
+            $password ?? $user->getPassword(),
+             $user->getTimestamp()->update()
         );
 
         $this->userRepository->save($newUser);

@@ -6,6 +6,7 @@ use App\Domain\User\Entity\User as DomainUser;
 use App\Domain\User\ValueObject\Id;
 use App\Domain\User\ValueObject\Password;
 use App\Domain\User\ValueObject\Roles;
+use App\Infrastructure\Doctrine\Embeddable\TimeRangeEmbeddable;
 use App\Infrastructure\Doctrine\Entity\User\DoctrineUser;
 use App\Infrastructure\Doctrine\Embeddable\AddressEmbeddable;
 use App\Infrastructure\Doctrine\Embeddable\EmailEmbeddable;
@@ -20,6 +21,7 @@ final class UserAdapter
         $doctrineUser->setEmail(EmailEmbeddable::fromDomain($user->getEmail()));
         $doctrineUser->setRoles($user->getRoles()->value());
         $doctrineUser->setPassword($user->getPassword()->value());
+        $doctrineUser->setTimestamp(TimeRangeEmbeddable::fromDomain($user->getTimestamp()));
 
         if ($user->getId()) {
             $doctrineUser->setId($user->getId()->value());
@@ -44,6 +46,7 @@ final class UserAdapter
 
         $doctrineUser->setRoles($user->getRoles()->value());
         $doctrineUser->setPassword($user->getPassword()->value());
+        $doctrineUser->setTimestamp(TimeRangeEmbeddable::fromDomain($user->getTimestamp()));
     }
 
     public static function toDomain(DoctrineUser $entity): DomainUser
@@ -53,7 +56,8 @@ final class UserAdapter
             $entity->getEmail()->toDomain(),
             $entity->getAddress()->toDomain(),
             new Roles($entity->getRoles()),
-            new Password($entity->getPassword())
+            new Password($entity->getPassword()),
+            $entity->getTimestamp()->toDomain()
         );
     }
 }
