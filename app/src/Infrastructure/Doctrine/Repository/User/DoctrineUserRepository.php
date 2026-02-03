@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Doctrine\Repository\User;
 
+use App\Domain\Shared\Pagination\PaginatedResult;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
@@ -10,7 +11,6 @@ use App\Infrastructure\Doctrine\Mapper\DoctrineUserMapper;
 use App\Infrastructure\Doctrine\Repository\DoctrineRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\Exception\ORMException;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
 
 class DoctrineUserRepository extends ServiceEntityRepository implements UserRepositoryInterface
@@ -46,7 +46,6 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
     }
 
     /**
-     * @throws OptimisticLockException
      * @throws ORMException
      */
     public function doctrineFindOneById(int $id): object|string|null
@@ -62,15 +61,27 @@ class DoctrineUserRepository extends ServiceEntityRepository implements UserRepo
         return $user !== null;
     }
 
-    public function getAll(): array
+    public function getAll(int $page = 1, int $limit = 10): PaginatedResult
     {
+        $offset = max(0, ($page - 1) * $limit);
+
         $doctrineUsers = $this->getEntityManager()
             ->getRepository(self::DOCTRINE_CLASS_NAME)
-            ->findAll();
+            ->createQueryBuilder('u')
+            ->orderBy('u.id', 'ASC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
 
-        return array_map(
+        $countQb = $this->createQueryBuilder('u')->select('COUNT(u.id)');
+        $total = (int)$countQb->getQuery()->getSingleScalarResult();
+
+        $items = array_map(
             fn(DoctrineUser $user) => $this->mapper->fromDoctrine($user),
             $doctrineUsers
         );
+
+        return new PaginatedResult($items, $total, $limit);
     }
 }

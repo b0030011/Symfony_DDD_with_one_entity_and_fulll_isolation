@@ -1,11 +1,14 @@
 <?php
 
-namespace App\Infrastructure\Presentation\Api\User\Controller;
+namespace App\Presentation\Api\User\Controller;
 
+use App\Application\Dto\PaginationParams;
 use App\Application\User\Service\User\CreateUserService;
 use App\Application\User\Service\User\GetAllUsersService;
 use App\Application\User\Service\User\GetOneUserService;
 use App\Application\User\Service\User\UpdateUserService;
+use App\Presentation\Api\User\ViewModel\UserListViewModel;
+use App\Presentation\Api\User\ViewModel\UserViewModel;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +27,19 @@ readonly class UserController
     #[Route('/users', name: 'users', methods: ['GET'])]
     public function index(Request $request): JsonResponse
     {
-        $data = ($this->usersService)();
-        return new JsonResponse(['data' => $data], Response::HTTP_OK);
+        $page = max(1, (int)$request->query->get('page', '1'));
+        $limit = max(1, min(100, (int)$request->query->get('limit', '10')));
+
+        $params = new PaginationParams($page, $limit);
+        $paginatedResult = ($this->usersService)($params);
+
+        $viewModel = new UserListViewModel(
+            $paginatedResult,
+            $page,
+            $limit
+        );
+
+        return new JsonResponse($viewModel->toArray(), Response::HTTP_OK);
     }
 
     #[Route('/register', name: 'register', methods: ['POST'])]
@@ -67,15 +81,13 @@ readonly class UserController
     #[Route('/user/{id}', name: 'user', methods: ['GET'])]
     public function view(int $id): JsonResponse
     {
-        $data = ($this->userService)($id);
+        $user = ($this->userService)($id);
 
-        if ($data === null) {
+        if (null === $user) {
             return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
 
-        return new JsonResponse(['data' => $data], Response::HTTP_OK);
+        $viewModel = new UserViewModel($user);
+        return new JsonResponse(['data' => $viewModel->toArray()], Response::HTTP_OK);
     }
-
-
-
 }
