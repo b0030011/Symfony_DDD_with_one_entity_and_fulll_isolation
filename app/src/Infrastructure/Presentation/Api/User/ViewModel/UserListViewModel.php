@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Presentation\Api\User\ViewModel;
 
-use App\Domain\Pagination\PaginatedResult;
+use App\Domain\Shared\Pagination\PaginatedResult;
 use App\Domain\User\Entity\User;
 
 class UserListViewModel

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Doctrine\Repository\User;
 
-use App\Domain\Pagination\PaginatedResult;
+use App\Domain\Shared\Pagination\PaginatedResult;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Repository\UserRepositoryInterface;
 use App\Domain\User\ValueObject\Email;
