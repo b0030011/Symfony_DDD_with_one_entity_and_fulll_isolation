@@ -27,8 +27,8 @@ readonly class UserController
     #[Route('/users', name: 'users', methods: ['GET'])]
     public function index(Request $request): JsonResponse
     {
-        $page = max(1, (int)$request->query->get('page', '1'));
-        $limit = max(1, min(100, (int)$request->query->get('limit', '10')));
+        $page = max(1, (int)$request->request->get('page', '1'));
+        $limit = max(1, min(100, (int)$request->request->get('limit', '10')));
 
         $params = new PaginationParams($page, $limit);
         $paginatedResult = ($this->usersService)($params);
