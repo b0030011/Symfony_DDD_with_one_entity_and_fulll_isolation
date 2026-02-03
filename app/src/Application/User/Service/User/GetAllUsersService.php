@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Application\User\Service\User;
 
-use App\Domain\User\Entity\User;
+use App\Application\Dto\PaginationParams;
+use App\Domain\Shared\Pagination\PaginatedResult;
 use App\Domain\User\Repository\UserRepositoryInterface;
 
 readonly class GetAllUsersService
@@ -13,17 +14,11 @@ readonly class GetAllUsersService
         private UserRepositoryInterface $userRepository,
     ) {}
 
-    public function __invoke(): array
+    public function __invoke(PaginationParams $params): PaginatedResult
     {
-        $users = $this->userRepository->getAll();
-
-        return array_map(static function (User $user) {
-            return [
-                'id' => $user->getId()?->value(),
-                'email' => $user->getEmail()->value(),
-                'roles' => $user->getRoles()->value(),
-                'address' => $user->getAddress()->value()
-            ];
-        }, $users);
+        return $this->userRepository->getAll(
+            page: $params->page,
+            limit: $params->limit
+        );
     }
 }
