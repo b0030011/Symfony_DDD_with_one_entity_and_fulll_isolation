@@ -2,6 +2,7 @@
 
 namespace App\Domain\User\Entity;
 
+use App\Domain\Shared\ValueObject\TimeRange;
 use App\Domain\User\ValueObject\Address;
 use App\Domain\User\ValueObject\Email;
 use App\Domain\User\ValueObject\Id;
@@ -16,6 +17,7 @@ class User
         private ?Address $address,
         private ?Roles $roles,
         private ?Password $password,
+        private ?TimeRange $timestamp
     ) {
         $this->validate();
     }
@@ -25,9 +27,10 @@ class User
         Email $email,
         Address $address,
         Roles $roles,
-        Password $password
+        Password $password,
+        ?TimeRange $timestamp = null
     ): self {
-        return new self($id, $email, $address, $roles, $password);
+        return new self($id, $email, $address, $roles, $password, $timestamp);
     }
 
     private function validate(): void
@@ -97,4 +100,18 @@ class User
         return $this;
     }
 
+    public function getTimestamp(): TimeRange
+    {
+        return $this->timestamp;
+    }
+
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->timestamp->getCreatedAt();
+    }
+
+    public function getUpdatedAt(): \DateTimeImmutable
+    {
+        return $this->timestamp->getUpdatedAt();
+    }
 }
