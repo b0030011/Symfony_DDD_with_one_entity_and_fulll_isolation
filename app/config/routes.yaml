@@ -9,6 +9,6 @@
 
 controllers:
     resource:
-        path: ../src/Infrastructure/Presentation/
-        namespace: App\Infrastructure\Presentation
+        path: ../src/Presentation/
+        namespace: App\Presentation
     type: attribute
