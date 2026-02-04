@@ -2,9 +2,7 @@
 
 namespace App\Domain\Shared\ValueObject;
 
-use App\Domain\Contract\ValueObjectInterface;
-
-final class TimeRange implements ValueObjectInterface
+final class TimeRange
 {
     public function __construct(
         private ?\DateTimeImmutable $createdAt = null,
@@ -30,14 +28,6 @@ final class TimeRange implements ValueObjectInterface
     public function getUpdatedAt(): \DateTimeImmutable
     {
         return $this->updatedAt;
-    }
-
-    public function value(): array
-    {
-        return [
-            'createdAt' => $this->createdAt,
-            'updatedAt' => $this->updatedAt
-        ];
     }
 
     public function equals(ValueObjectInterface $other): bool
