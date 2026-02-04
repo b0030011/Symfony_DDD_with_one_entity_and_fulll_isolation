@@ -29,11 +29,4 @@ final class TimeRange
     {
         return $this->updatedAt;
     }
-
-    public function equals(ValueObjectInterface $other): bool
-    {
-        return $other instanceof self
-            && $this->createdAt == $other->createdAt
-            && $this->updatedAt == $other->updatedAt;
-    }
 }
