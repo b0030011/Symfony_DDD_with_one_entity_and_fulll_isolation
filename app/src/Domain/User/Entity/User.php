@@ -20,6 +20,10 @@ class User
         private ?TimeRange $timestamp
     ) {
         $this->validate();
+
+        if ($timestamp === null) {
+            $this->timestamp = new TimeRange();
+        }
     }
 
     public static function create(
