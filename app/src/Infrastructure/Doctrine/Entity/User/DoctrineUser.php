@@ -37,14 +37,6 @@ class DoctrineUser implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Embedded(class: TimeRangeEmbeddable::class, columnPrefix: 'timestamp_')]
     private TimeRangeEmbeddable $timestamp;
 
-    public function __construct()
-    {
-        $this->timestamp = new TimeRangeEmbeddable(
-            new \DateTimeImmutable(),
-            new \DateTimeImmutable()
-        );
-    }
-
     public function getId(): ?int
     {
         return $this->id;
