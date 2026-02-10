@@ -1,7 +1,7 @@
 services:
   php:
     build:
-      context: ../../roadrunner
+      context: ../../franken
       args:
         PHP_VERSION: 8.4
         ANTISLEEP_ENV: local
