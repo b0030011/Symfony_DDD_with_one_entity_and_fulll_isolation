@@ -1,18 +1,19 @@
 FROM php:8.4-fpm
-ARG ANTISLEEP_ENV=local
-ARG PHP_INI_ENV=production
+ARG ARG_ENV=local
+ARG PHP_INI_ENV=development
 
 # Копируем конфиги
 COPY ./php.ini-$PHP_INI_ENV "$PHP_INI_DIR/php.ini"
 COPY ./www.conf "/usr/local/etc/php-fpm.d/www.conf"
 
 RUN apt-get update && apt-get install -y \
-        mc \
-        htop \
-        libzip-dev \
-        libpng-dev \
-        libpq-dev \
-        supervisor
+    mc \
+    htop \
+    libzip-dev \
+    libpng-dev \
+    libpq-dev \
+    supervisor \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-install pdo_pgsql pdo_mysql gd zip pcntl bcmath
 
@@ -22,7 +23,7 @@ COPY ./supervisor/ /etc/supervisor/
 # Убедимся, что директория supervisor существует и имеет правильные права
 RUN mkdir -p /var/run/supervisor && chmod 755 /var/run/supervisor
 
-RUN if [ "$ANTISLEEP_ENV" = "local" ]; then pecl install -f xdebug && docker-php-ext-enable xdebug ; fi
+RUN if [ "$ARG_ENV" = "local" ]; then pecl install -f xdebug && docker-php-ext-enable xdebug ; fi
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
