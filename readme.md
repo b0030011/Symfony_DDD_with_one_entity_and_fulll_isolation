@@ -57,6 +57,32 @@
 - **DAMA Doctrine Test Bundle** - тестирование с БД
 - **Doctrine Fixtures Bundle** - тестовые данные
 
+## 🚀 Поддерживаемые серверы запуска
+
+Проект поддерживает несколько способов запуска PHP приложения через Docker:
+
+### Доступные серверы для веток Main, doctrine_orm_embeddables:
+- **PHP-FPM** - традиционный подход с Nginx
+- **RoadRunner** - высокопроизводительный PHP application server
+- **FrankenPHP** - современный сервер со встроенным PHP
+
+### Настройка через .env
+В корневом `.env` файле доступны настройки:
+
+```env
+# PHP-FPM
+# Включен по умолчанию. Чтобы включить PHP-FPM закоментируйье нижние блоки
+
+# Файлы roadrunner
+PHP=php-rr
+NGINX=nginx-off
+NGINX_REVERSE_PROXY=nginx-reverse-proxy-default
+
+# Файлы franken
+#PHP=php-franken
+#NGINX=nginx-off
+#NGINX_REVERSE_PROXY=nginx-reverse-proxy-default
+```
 ### Версии
 - PHP 8.4
 - Symfony 8
