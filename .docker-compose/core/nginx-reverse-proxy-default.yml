@@ -5,7 +5,7 @@ services:
     depends_on:
       - php
     volumes:
-      - ../../nginx-reverse-proxy/local.antisleep.ru-rr.conf:/etc/nginx/conf.d/local.antisleep.ru.conf
+      - ../../nginx-reverse-proxy/local.test.ru-rr.conf:/etc/nginx/conf.d/local.test.ru.conf
       - ../../log/nginx-reverse-proxy:/var/log/nginx
     ports:
       - "80:80"
