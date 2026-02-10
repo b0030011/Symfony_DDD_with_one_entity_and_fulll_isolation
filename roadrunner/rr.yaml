@@ -1,0 +1,27 @@
+version: "3"
+server:
+  command: "php /app/public/index.php"
+  env:
+    - APP_RUNTIME: Baldinof\RoadRunnerBundle\Runtime\Runtime
+
+http:
+  address: 0.0.0.0:80
+  static:
+    dir: "/app/public"
+    forbid: [".htaccess", ".php"]
+
+  middleware: ["static"]
+  pool:
+    num_workers: 4
+    max_jobs: 64
+
+logs:
+  mode: development
+  channels:
+    http:
+      level: debug # Log all http requests, set to info to disable
+    server:
+      level: info # Everything written to worker stderr is logged
+      mode: raw
+    metrics:
+      level: debug

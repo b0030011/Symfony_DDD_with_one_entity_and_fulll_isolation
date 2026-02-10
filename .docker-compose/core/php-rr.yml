@@ -1,16 +1,15 @@
 services:
   php:
     build:
-      context: ../../php-fpm
+      context: ../../roadrunner
       args:
         PHP_VERSION: 8.4
         ANTISLEEP_ENV: local
         PHP_INI_ENV: development
     container_name: symfony_php
-    ports:
-      - "9000:9000"
     volumes:
       - ../../app/:/app/
-      - ../../php-fpm/xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
+    ports:
+      - "8080:80"
     networks:
       app_net:
