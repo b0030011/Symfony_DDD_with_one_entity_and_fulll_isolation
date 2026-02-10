@@ -9,8 +9,6 @@ EXPOSE 80/tcp
 
 WORKDIR /app
 
-ENV COMPOSER_ALLOW_SUPERUSER=1
-
 COPY rr.yaml /docker-entrypoint.d/rr.yaml
 
 RUN if [ -f config/bundles.php ]; then \
