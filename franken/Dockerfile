@@ -1,13 +1,7 @@
 FROM dunglas/frankenphp:1-php8.4
 
 RUN --mount=type=bind,from=mlocati/php-extension-installer:2,source=/usr/bin/install-php-extensions,target=/usr/local/bin/install-php-extensions \
-     install-php-extensions zip gd pdo_pgsql pdo_mysql intl sockets
-
-RUN pecl install xdebug && docker-php-ext-enable xdebug
-
-RUN mkdir -p /app/var/log
-
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+     install-php-extensions @composer-2 zip gd pdo_pgsql pdo_mysql intl sockets xdebug
 
 WORKDIR /app
 
