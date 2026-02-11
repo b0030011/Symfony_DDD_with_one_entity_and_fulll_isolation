@@ -1,11 +1,15 @@
-FROM php:8.4-fpm
+FROM dunglas/frankenphp:1-php8.4
 
 RUN --mount=type=bind,from=mlocati/php-extension-installer:2,source=/usr/bin/install-php-extensions,target=/usr/local/bin/install-php-extensions \
-     install-php-extensions @composer-2 opcache zip intl sockets protobuf imap redis pdo_pgsql pdo_mysql gd pcntl bcmath xdebug
+     install-php-extensions zip gd pdo_pgsql pdo_mysql intl sockets
+
+RUN pecl install xdebug && docker-php-ext-enable xdebug
+
+RUN mkdir -p /app/var/log
+
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
-
-RUN usermod -u 1000 www-data
 
 COPY entrypoint.sh /docker-entrypoint.d/entrypoint.sh
 RUN chmod +x /docker-entrypoint.d/entrypoint.sh
