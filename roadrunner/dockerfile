@@ -2,7 +2,7 @@ FROM ghcr.io/roadrunner-server/roadrunner:2025.1.6 as roadrunner
 FROM php:8.4-cli
 
 RUN --mount=type=bind,from=mlocati/php-extension-installer:2,source=/usr/bin/install-php-extensions,target=/usr/local/bin/install-php-extensions \
-     install-php-extensions @composer opcache zip intl sockets protobuf imap redis pdo_pgsql pdo_mysql
+     install-php-extensions @composer-2 opcache zip intl sockets protobuf imap redis pdo_pgsql pdo_mysql
 
 COPY --from=roadrunner /usr/bin/rr /usr/local/bin/rr
 EXPOSE 80/tcp
